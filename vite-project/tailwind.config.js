@@ -53,7 +53,8 @@ export default {
 			
   		},
 		backgroundImage : {
-			gradient : 'linear-gradient(153deg, rgba(255,0,85,1) 0%, rgba(255,255,255,1) 100%)'
+			gradient : 'linear-gradient(153deg, rgba(255,0,85,1) 0%, rgba(255,255,255,1) 100%)',
+			btmgradient : 'linear-gradient(0deg, rgba(0,0,0,.7) 26%, rgba(255,255,255,0) 100%);'
 		}
 		
   	}

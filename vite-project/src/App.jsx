@@ -19,7 +19,7 @@ export default function App() {
   console.log(showData);
   return (
     <div className="">
-      <div className="flex items-center place-content-between rounded-b-md shadow-sm shadow-accent py-4">
+      <div className="flex items-center p-4 place-content-between rounded-b-md shadow-sm shadow-accent">
         <DropdownMenu>
           <DropdownMenuTrigger className="flex justify-center items-center cursor-pointer select-none text-primary rounded-sm bg-black text-sm outline-none focus:bg-accent data-[state=open]:bg-accent">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="size-10">
@@ -45,25 +45,43 @@ export default function App() {
         </div>
       </div>
       <div className="flex items-center justify-center py-4">
-        <div className="flex flex-col w-60 justify-center items-center text-left gap-4">
-          <p className="bg-gradient bg-clip-text text text-transparent uppercase text-xl font-bold text-left">Vos films et séries, en mauvaise qualité !</p>
+        <div className="flex flex-col w-64 justify-center items-center text-left gap-4">
+          <h1 className="bg-gradient bg-clip-text text text-transparent uppercase text-2xl font-bold text-left">Vos films et séries, en mauvaise qualité !</h1>
           <img className="w-full" src="/Vector.png" alt="" />
           <Button variant="outline" className="bg-primary text-white">Log in</Button>
         </div>
       </div>
       <section>
-        <h2>Les films du moments</h2>
+        <h2 className="bg-gradient bg-clip-text text-transparent uppercase text-xl font-bold text-center pb-4 pt-8">Les films du moments</h2>
         <figure>
-          <img src="" alt="" />
-          <figcaption> { isLoadingShow ? showError
-      :
-      <div>
-        { showData && (<h2>{showData[0].show.name} {showData[0].score}</h2>)}
-      </div>
-      
-    }</figcaption>
+          {isLoadingShow ? (
+            <div>Loading...</div>
+          ) : showError ? (
+            <div>Error: {showError}</div>
+          ) : (
+            <div>
+              {showData && (
+                <>
+                  <figure className="relative h-72 overflow-hidden rounded-b-xl">
+                    <div className="z-20 absolute inset-0 bg-btmgradient" />
+                    <img className="z-10 absolute w-full h-auto bottom-0" src={showData[0].show.image.medium} alt={showData[0].show.name} />
+                    <figcaption>
+                      <h2 className="z-30 absolute bottom-0 p-4 bg-gradient bg-clip-text text-transparent font-bold text-xl">
+                        {showData[0].show.name} - {(showData[0].score * 10).toFixed(2)}/10
+                      </h2>
+                    </figcaption>
+                  </figure>
+                </>
+              )}
+              <section className="text-foreground">
+              <p className="text-foreground text-md">desc</p>
+              
+              </section>              
+            </div>
+          )}
         </figure>
       </section>
+
     </div>
   );
 }

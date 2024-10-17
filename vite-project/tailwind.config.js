@@ -55,6 +55,7 @@ export default {
 		backgroundImage : {
 			gradient : 'linear-gradient(153deg, rgba(255,0,85,1) 0%, rgba(255,255,255,1) 100%)'
 		}
+		
   	}
   },
   plugins: [require("tailwindcss-animate")],

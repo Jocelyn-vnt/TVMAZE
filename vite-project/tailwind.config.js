@@ -49,8 +49,12 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			}
-  		}
+  			},
+			
+  		},
+		backgroundImage : {
+			gradient : 'linear-gradient(153deg, rgba(255,0,85,1) 0%, rgba(255,255,255,1) 100%)'
+		}
   	}
   },
   plugins: [require("tailwindcss-animate")],

@@ -64,10 +64,10 @@ export default function App() {
                 <>
                   <figure className="relative h-72 overflow-hidden rounded-b-xl">
                     <div className="z-20 absolute inset-0 bg-btmgradient" />
-                    <img className="z-10 absolute w-full h-auto bottom-0" src={showData[0].show.image.medium} alt={showData[0].show.name} />
+                    <img className="z-10 absolute w-full h-auto bottom-0" src={showData[2].show.image.medium} alt={showData[0].show.name} />
                     <figcaption>
                       <h2 className="z-30 absolute bottom-0 p-4 bg-gradient bg-clip-text text-transparent font-bold text-xl">
-                        {showData[0].show.name} - {(showData[0].score * 10).toFixed(2)}/10
+                        {showData[2].show.name} - {(showData[2].score * 10).toFixed(2)}/10
                       </h2>
                     </figcaption>
                   </figure>

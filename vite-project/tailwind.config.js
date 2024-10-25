@@ -49,14 +49,34 @@ export default {
   				'3': 'hsl(var(--chart-3))',
   				'4': 'hsl(var(--chart-4))',
   				'5': 'hsl(var(--chart-5))'
-  			},
-			
+  			}
   		},
-		backgroundImage : {
-			gradient : 'linear-gradient(153deg, rgba(255,0,85,1) 0%, rgba(255,255,255,1) 100%)',
-			btmgradient : 'linear-gradient(0deg, rgba(0,0,0,.7) 26%, rgba(255,255,255,0) 100%);'
-		}
-		
+  		backgroundImage: {
+  			gradient: 'linear-gradient(153deg, rgba(255,0,85,1) 0%, rgba(255,255,255,1) 100%)',
+  			btmgradient: 'linear-gradient(0deg, rgba(0,0,0,.7) 26%, rgba(255,255,255,0) 100%);'
+  		},
+  		keyframes: {
+  			'accordion-down': {
+  				from: {
+  					height: '0'
+  				},
+  				to: {
+  					height: 'var(--radix-accordion-content-height)'
+  				}
+  			},
+  			'accordion-up': {
+  				from: {
+  					height: 'var(--radix-accordion-content-height)'
+  				},
+  				to: {
+  					height: '0'
+  				}
+  			}
+  		},
+  		animation: {
+  			'accordion-down': 'accordion-down 0.2s ease-out',
+  			'accordion-up': 'accordion-up 0.2s ease-out'
+  		}
   	}
   },
   plugins: [require("tailwindcss-animate")],

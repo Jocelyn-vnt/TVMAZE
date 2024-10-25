@@ -7,7 +7,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
 import { useState } from "react";
+
 
 export default function App() {
 
@@ -34,14 +41,14 @@ export default function App() {
   return (
     <div className="">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-full max-w-screen-lg flex justify-between items-center p-4 bg-background rounded-md shadow-sm shadow-accent">
+        <div className="w-full flex justify-between items-center p-4 bg-background rounded-md shadow-sm shadow-accent">
           <img src="/Logo.svg" alt="Logo" className="w-24" />
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="" className="h-10 stroke-primary">
             <path strokeLinecap="round" strokeLinejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
           </svg>
         </div>
 
-        <form onSubmit={handlerSubmit} className="w-full max-w-screen-lg flex gap-2 items-center">
+        <form onSubmit={handlerSubmit} className="w-full flex gap-2 items-center">
           <input
             type="text"
             name="serie"
@@ -51,33 +58,43 @@ export default function App() {
           <Button type="submit" className="h-10 px-4">Search</Button>
         </form>
 
-        <div className="text-center bg-background p-4 rounded-md">
+        <div className="text-center bg-background w-full p-4 rounded-md">
           <h1 className="text-2xl font-bold uppercase bg-gradient bg-clip-text text-transparent ">Vos films et séries, en ULTRA HD !</h1>
           <img className="w-32 mx-auto mt-4" src="/Vector.png" alt="Vector" />
         </div>
 
         {showData && (
-          <section className="w-full max-w-screen-lg rounded-md shadow-sm shadow-accent">
+          <section className="w-full rounded-md shadow-sm shadow-accent">
             <div className="bg-background rounded-md">
               <h2 className="text-xl font-bold text-center bg-gradient bg-clip-text text-transparent p-4 w-full">{showData.name}</h2>
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 space-y-4">
               {isLoadingShow ? (
                 <div>Loading...</div>
               ) : showError ? (
                 <div>Error: {showError}</div>
               ) : (
-                <div className="relative">
+                <div className="grid lg:grid-cols-2 gap-4 mt-4">
                   <img
                     className="bg-btmgradient rounded-md w-full"
                     src={showData.image.original}
                     alt={showData.name}
                   />
-                  <div className="absolute inset-0 bg-transparent hover:bg-btmgradient transition-opacity duration-300">
-                    <p className="absolute bottom-0 text-white p-4 opacity-0 hover:opacity-100 transition-opacity duration-300" dangerouslySetInnerHTML={{ __html: showData.summary }}></p>
+                  <div className="bg-background hover:bg-btmgradient transition-opacity duration-300 text-white bottom-0 p-4">
+                    <div className="bottom-0 m-4">
+                      <p><span className="font-bold">Language :</span> {showData?.language}</p>
+                      <p><span className="font-bold">Status :</span> {showData?.status}</p>
+                      <p className="" dangerouslySetInnerHTML={{ __html: showData.summary }}></p>
+                      <div className="flex gap-4 pt-4">
+                        {showData?.genres.map((genre, index) => (
+                          <p key={index} className="bg-muted p-1 rounded-md">{genre}</p>
+                        ))}
+                      </div>
+                    </div>
                   </div>
                 </div>
+
               )}
             </div>
 
@@ -133,6 +150,96 @@ export default function App() {
           </section>
         )}
       </div>
+      <div className="w-full flex flex-col gap-5 py-2 items-center justify-center">
+        <div className="w-full justify-center items-center h-auto grid grid-flow-col grid-rows-4 grid-cols-1 gap-2">
+          <div>
+            <Accordion type="single" collapsible className="bg-background px-4 rounded-md w-full">
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="text-foreground "><img src="/Lignes.svg" alt="Lignes de vitesse" className="stroke-foreground" />Qui sommes-nous ?</AccordionTrigger>
+                <AccordionContent className="text-secondary">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          <div>
+            <Accordion type="single" collapsible className="bg-background px-4 rounded-md">
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="text-foreground"><img src="/Lignes.svg" alt="Lignes de vitesse" />Nos abonnenents</AccordionTrigger>
+                <AccordionContent className="text-secondary">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+          <div>
+            <Accordion type="single" collapsible className="bg-background px-4 rounded-md">
+              <AccordionItem value="item-1">
+                <AccordionTrigger className="text-foreground"><img src="/Lignes.svg" alt="Lignes de vitesse" />Notre catalogue</AccordionTrigger>
+                <AccordionContent className="text-secondary">
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
+          </div>
+
+          <Accordion type="single" collapsible className="bg-background px-4 rounded-md">
+            <AccordionItem value="item-1">
+              <AccordionTrigger className="text-foreground"><img src="/Lignes.svg" alt="Lignes de vitesse" />Contactez-nous</AccordionTrigger>
+              <AccordionContent className="text-secondary">
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
+        </div>
+
+        <div className="w-60 h-auto grid justify-center items-center grid-flow-col grid-cols-1 grid-rows-2 gap-2">
+          <h1 className="bg-gradient text-transparent bg-clip-text uppercase text-center text-lg font-bold">Suivez-nous</h1>
+          <div className="flex justify-center items-center gap-2">
+            <a href=""><img src="/RS-1.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1" /></a>
+
+            <a href=""><img src="/RS-2.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1" /></a>
+
+            <a href=""><img src="/RS-3.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1" /></a>
+
+            <a href=""><img src="/RS-4.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1" /></a>
+          </div>
+        </div>
+
+        <div className="w-screen flex flex-col align-center px-10 text-primary font-light underline gap-1">
+
+          <a href="">FAQ</a>
+
+          <a href="">Centre d'aide</a>
+
+          <a href="">Presse</a>
+
+          <a href="">Préférences de cookies</a>
+
+          <a href="">Mentions légales</a>
+
+          <a href="">Confidentialité</a>
+
+          <a href="">Condition d’utilisation</a>
+
+          <a href="">Compte</a>
+
+          <a href="">Recrutement</a>
+
+        </div>
+
+        <div className="w-4/5 bg-primary flex justify-center items-center rounded-t-md">
+
+          <a href=""><img src="/Logo.svg" alt="Logo du site de streaming Pacifico" /></a>
+
+        </div>
+
+      </div>
+
+
+
+
     </div>
   );
 }

@@ -28,6 +28,8 @@ export default function App() {
     setSerie(urlString);
   };
 
+
+
   const {
     data: showData,
     isLoading: isLoadingShow,
@@ -81,7 +83,7 @@ export default function App() {
                     src={showData.image.original}
                     alt={showData.name}
                   />
-                  <div className="bg-background hover:bg-btmgradient transition-opacity duration-300 text-white bottom-0 p-4">
+                  <div className="bg-background hover:bg-btmgradient transition-opacity duration-300 text-white bottom-0 p-4 rounded-md">
                     <div className="bottom-0 m-4">
                       <p><span className="font-bold">Language :</span> {showData?.language}</p>
                       <p><span className="font-bold">Status :</span> {showData?.status}</p>
@@ -96,26 +98,28 @@ export default function App() {
                 </div>
 
               )}
+              <Select onValueChange={handleSelectChange} className="mt-6">
+                <SelectTrigger className="w-full bg-primary text-white">
+                  <SelectValue placeholder="More infos" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="hide">Hide</SelectItem>
+                  <SelectItem value="episodes">Episodes</SelectItem>
+                  <SelectItem value="seasons">Seasons</SelectItem>
+                  <SelectItem value="cast">Cast</SelectItem>
+                </SelectContent>
+              </Select>
+
             </div>
 
-            <Select onValueChange={handleSelectChange} className="mt-4">
-              <SelectTrigger className="w-full bg-primary text-white">
-                <SelectValue placeholder="More infos" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="hide">Hide</SelectItem>
-                <SelectItem value="episodes">Episodes</SelectItem>
-                <SelectItem value="seasons">Seasons</SelectItem>
-                <SelectItem value="cast">Cast</SelectItem>
-              </SelectContent>
-            </Select>
+
 
             <div className="flex flex-col gap-4 mt-4">
               {selectedInfo === "episodes" && (
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                <div className="grid grid-cols-1sm:grid-cols-2 md:grid-cols-3 gap-4">
                   {showData._embedded.episodes.map((film) => (
-                    <div key={film.id} className="flex flex-col gap-4 md:flex-row border-b border-gray-200 bg-background rounded-md">
-                      <img className="h-40 w-40 object-cover md:w-40" src={film.image.original} alt={film.name} />
+                    <div key={film.id} className="grid gap-4 md:flex-row border-b border-gray-200 bg-background rounded-md overflow-hidden">
+                      <img className="h-auto w-full object-cover md:w-full" src={film.image.original} alt={film.name} />
                       <div className="p-4">
                         <h3 className="font-semibold text-lg">{film.name}</h3>
                         <p className="text-sm">{film.summary.replace(/(<([^>]+)>)/gi, "")}</p>
@@ -126,88 +130,102 @@ export default function App() {
                 </div>
               )}
 
-              {selectedInfo === "cast" && showData._embedded.cast.map((castMember) => (
-                <div key={castMember.person.id} className="flex gap-4 border-b border-accent bg-background rounded-md">
-                  <img className="h-40 w-40 object-cover md:w-40" src={castMember.person.image.original} alt={castMember.person.name} />
-                  <div className="p-4 flex flex-col text-left justify-center">
-                    <h3 className="font-semibold text-lg">{castMember.person.name}</h3>
-                    <p className="text-sm text-secondary">{castMember.character.name}</p>
-                  </div>
+              {selectedInfo === "cast" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {showData._embedded.cast.map((castMember) => (
+                    <div key={castMember.person.id} className="grid grid-cols-2 gap-4 md:flex-row border-b border-accent bg-background rounded-md overflow-hidden">
+                      <img className="h-40 w-40 object-cover md:w-full" src={castMember.person.image.original} alt={castMember.person.name} />
+                      <div className="p-4">
+                        <h3 className="font-semibold text-lg">{castMember.person.name}</h3>
+                        <p className="text-sm text-secondary">{castMember.character.name}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
 
-              {selectedInfo === "seasons" && showData._embedded.seasons.map((season) => (
-                <div key={season.id} className="flex gap-4 border-b border-accent bg-background rounded-md">
-                  <img className="h-40 w-40 object-cover md:w-40" src={season.image.original} alt={`Season ${season.number}`} />
-                  <div className="p-4 flex flex-col text-left justify-center">
-                    <h3 className="font-semibold text-lg">Season {season.number}</h3>
-                    <p className="text-sm">{season.premiereDate} - {season.endDate || "Ongoing"}</p>
-                    <p className="text-sm text-secondary mt-2">Episodes: {season.episodeOrder}</p>
-                  </div>
+              {selectedInfo === "seasons" && (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+                  {showData._embedded.seasons.map((season) => (
+                    <div key={season.id} className="grid gap-4 md:flex-row border-b border-accent bg-background rounded-md overflow-hidden">
+                      <img className="h-auto w-full object-cover md:w-full" src={season.image.original} alt={`Season ${season.number}`} />
+                      <div className="p-4">
+                        <h3 className="font-semibold text-lg">Season {season.number}</h3>
+                        <p className="text-sm">{season.premiereDate} - {season.endDate || "Ongoing"}</p>
+                        <p className="text-sm text-secondary mt-2">Episodes: {season.episodeOrder}</p>
+                      </div>
+                    </div>
+                  ))}
                 </div>
-              ))}
+              )}
             </div>
+
           </section>
         )}
       </div>
       <div className="w-full flex flex-col gap-5 py-2 items-center justify-center">
-        <div className="w-full justify-center items-center h-auto grid grid-flow-col grid-rows-4 grid-cols-1 gap-2">
-          <div>
-            <Accordion type="single" collapsible className="bg-background px-4 rounded-md w-full">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="text-foreground "><img src="/Lignes.svg" alt="Lignes de vitesse" className="stroke-foreground" />Qui sommes-nous ?</AccordionTrigger>
-                <AccordionContent className="text-secondary">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
 
-          <div>
-            <Accordion type="single" collapsible className="bg-background px-4 rounded-md">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="text-foreground"><img src="/Lignes.svg" alt="Lignes de vitesse" />Nos abonnenents</AccordionTrigger>
-                <AccordionContent className="text-secondary">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-          <div>
-            <Accordion type="single" collapsible className="bg-background px-4 rounded-md">
-              <AccordionItem value="item-1">
-                <AccordionTrigger className="text-foreground"><img src="/Lignes.svg" alt="Lignes de vitesse" />Notre catalogue</AccordionTrigger>
-                <AccordionContent className="text-secondary">
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                </AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
 
-          <Accordion type="single" collapsible className="bg-background px-4 rounded-md">
-            <AccordionItem value="item-1">
-              <AccordionTrigger className="text-foreground"><img src="/Lignes.svg" alt="Lignes de vitesse" />Contactez-nous</AccordionTrigger>
-              <AccordionContent className="text-secondary">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
+        <Accordion type="single" collapsible className="bg-background px-4 rounded-md w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-foreground ">Qui sommes-nous ?</AccordionTrigger>
+            <AccordionContent className="text-foreground">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        <Accordion type="single" collapsible className="bg-background px-4 rounded-md w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-foreground">Nos abonnenents</AccordionTrigger>
+            <AccordionContent className="text-foreground">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+        <Accordion type="single" collapsible className="bg-background px-4 rounded-md w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-foreground">Notre catalogue</AccordionTrigger>
+            <AccordionContent className="text-foreground">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
+
+        <Accordion type="single" collapsible className="bg-background px-4 rounded-md w-full">
+          <AccordionItem value="item-1">
+            <AccordionTrigger className="text-foreground">Contactez-nous</AccordionTrigger>
+            <AccordionContent className="text-foreground">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+            </AccordionContent>
+          </AccordionItem>
+        </Accordion>
+
 
         <div className="w-60 h-auto grid justify-center items-center grid-flow-col grid-cols-1 grid-rows-2 gap-2">
-          <h1 className="bg-gradient text-transparent bg-clip-text uppercase text-center text-lg font-bold">Suivez-nous</h1>
+          <h1 className="bg-gradient text-transparent bg-clip-text uppercase text-center text-lg font-bold">
+            Suivez-nous
+          </h1>
           <div className="flex justify-center items-center gap-2">
-            <a href=""><img src="/RS-1.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1" /></a>
-
-            <a href=""><img src="/RS-2.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1" /></a>
-
-            <a href=""><img src="/RS-3.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1" /></a>
-
-            <a href=""><img src="/RS-4.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1" /></a>
+            <a href="">
+              <img src="/RS-1.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1 fill-foreground" />
+            </a>
+            <a href="">
+              <img src="/RS-2.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1 fill-foreground" />
+            </a>
+            <a href="">
+              <img src="/RS-3.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1 fill-foreground" />
+            </a>
+            <a href="">
+              <img src="/RS-4.svg" alt="Icône de Twitter" className="bg-primary rounded-full p-1 fill-foreground" />
+            </a>
           </div>
         </div>
 
-        <div className="w-screen flex flex-col align-center px-10 text-primary font-light underline gap-1">
+
+        <div className="w-screen flex flex-col align-center px-10 text-foreground font-light underline gap-1 ">
 
           <a href="">FAQ</a>
 
@@ -229,7 +247,7 @@ export default function App() {
 
         </div>
 
-        <div className="w-4/5 bg-primary flex justify-center items-center rounded-t-md">
+        <div className="w-full bg-primary flex justify-center items-center rounded-md">
 
           <a href=""><img src="/Logo.svg" alt="Logo du site de streaming Pacifico" /></a>
 
